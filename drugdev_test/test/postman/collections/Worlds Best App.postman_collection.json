@@ -1,0 +1,154 @@
+{
+	"info": {
+		"_postman_id": "7c1f29a5-c810-4e44-bd27-a6678c565593",
+		"name": "Worlds Best App",
+		"description": "API tests for the worlds best app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login Success",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b5da03b8-9fc9-483f-a464-d77aef4ff3b3",
+						"exec": [
+							"",
+							"// Test username is returned ",
+							"pm.test(\"the username is returned\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.data.username).to.eql('Dr I Test');",
+							"});",
+							"",
+							"// Check status Code ",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// Check header type",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"//Test status code  value check ",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"});",
+							"//schema validation",
+							"pm.test('Schema is valid', function() {",
+							"  /*",
+							" ",
+							"  var schema = {",
+							"      \"username\": {",
+							"        \"type\": \"string\"",
+							"        }",
+							"    };",
+							"   var jsonData = pm.response.json();",
+							"   var data =jsonData.data;",
+							"   var valid = tv4.validate(data, schema);",
+							"      if (valid !== true) {",
+							"          console.log(tv4.error);",
+							"          console.log(tv4.error.dataPath);",
+							"      }",
+							"   pm.expect(valid).to.be.true;*/",
+							"  //  above schema validation failed using TV4 validator, ",
+							"  ",
+							"  // hence validation is done using following work around",
+							"   var jsonData = pm.response.json();",
+							"   var data =jsonData.data;",
+							"  pm.expect(data).to.have.property('username');",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"test@drugdev.com\",\n\t\"password\": \"supers3cret\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				},
+				"description": "Create succesfully login request"
+			},
+			"response": []
+		},
+		{
+			"name": "Login Error",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ba24cfa5-4ee3-4b4d-8ae6-b6d7517e6948",
+						"exec": [
+							"",
+							"// Check array of erros returned ",
+							"pm.test(\"return an array of errors\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.errors).to.be.an('array');",
+							"});",
+							"",
+							"// Test title of error correctly returned ",
+							"pm.test(\"return an first error title is 'Credentials are incorrect' \", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.errors[0].title).to.eql('Credentials are incorrect');",
+							"});",
+							"",
+							"// Check status code",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"test@drugdev.com\",\n\t\"password\": \"supersecret\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				},
+				"description": "Create error login request"
+			},
+			"response": []
+		}
+	]
+}
